@@ -38,16 +38,31 @@ const promptUser = () => {
       }
     },
     {
+      type: 'confirm',
+      name: 'confirmAbout',
+      message: 'Would you like to include an "About Me" section?',
+      default: true
+    },
+    {
       type: 'input',
       name: 'about',
-      message: 'What would you like to include in your "About Me" section?'
-    }])
+      message: 'Provide some information about yourself.',
+      when: ({ confirmAbout }) => {
+        if (confirmAbout) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+  ])
 };
 
 const promptProject = portfolioData => {
   if (!portfolioData.projects) {
     portfolioData.projects = [];
   }
+  
   return inquirer.prompt([
     {
       type: 'input',
@@ -110,8 +125,7 @@ const promptProject = portfolioData => {
 
 // prompt and display user questions/answers
 promptUser()
-  // why does this disrupt the execution???
   // .then(answers => console.log(answers))
   .then(promptProject)
-  .then(projectAnswers => console.log(projectAnswers))
+  .then(portfolioData => console.log(portfolioData))
 
