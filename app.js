@@ -14,12 +14,28 @@ const promptUser = () => {
     {
       type: 'input',
       name: 'name',
-      message: 'What is your name?'
+      message: 'What is your name?',
+      //requires user to enter name
+      validate: nameInput => {
+        if (nameInput) {
+          return true;
+        } else {
+          console.log("You must provide your name");
+          return false;
+        }
+      }
     },
     {
       type: 'input',
       name: 'github',
-      message: 'What is your github name?'
+      message: 'What is your github name?',
+      validate: githubName => {
+        if (githubName) {
+          return true;
+        } else {
+          console.log("You must provide your github name")
+        }
+      }
     },
     {
       type: 'input',
@@ -41,7 +57,15 @@ const promptProject = portfolioData => {
     {
       type: 'input',
       name: 'description',
-      message: 'Provide a description of your project (Required)'
+      message: 'Provide a description of your project (Required)',
+      validate: projectDescription => {
+        if (projectDescription) {
+          return true;
+        } else {
+          console.log("You must provide a description for this project");
+          return false;
+        }
+      }
     },
     {
       type: 'checkbox',
@@ -52,7 +76,15 @@ const promptProject = portfolioData => {
     {
       type: 'input',
       name: 'link',
-      message: 'Enter your Github link to your project. (Required)'
+      message: 'Enter your Github link to your project. (Required)',
+      validate: linkInput => {
+        if (linkInput) {
+          return true;
+        } else {
+          console.log("You must provide your github link");
+          return false;
+        }
+      }
     },
     {
       type: 'confirm',
@@ -78,6 +110,7 @@ const promptProject = portfolioData => {
 
 // prompt and display user questions/answers
 promptUser()
+  // why does this disrupt the execution???
   // .then(answers => console.log(answers))
   .then(promptProject)
   .then(projectAnswers => console.log(projectAnswers))
