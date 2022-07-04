@@ -7,6 +7,9 @@ const fs = require('fs');
 const generatePage = require('./src/page-template.js');
 // const { userInfo } = require('os');
 
+// import object from generate-site file
+const { writeFile, copyFile } = require('./utils/generate-site.js');
+
 
 
 // Generate user questions
@@ -127,17 +130,43 @@ const promptProject = portfolioData => {
   )
 }
 
+
+// writeFile function
+// fs.writeFile('./dist/index.html', pageHTML, err => {
+//   if (err) {
+//     console.log(err);
+//     return;
+//   }
+//   console.log('Page created! Check out index.html in this directory to see it!');
+// });
+
+// //copyFile function
+// fs.copyFile('./src/style.css', './dist/style.css', err => {
+//   if (err) {
+//     console.log(err);
+//     return;
+//   }
+//   console.log('Style sheet copied successfully!');
+// });
+
+
 // prompt and display user questions/answers
 promptUser()
   .then(promptProject)
   .then(portfolioData => {
-    const pageHTML = generatePage(portfolioData);
-  
-    // writes the html file!
-    fs.writeFile('./index.html', pageHTML, err => {
-      if (err) throw new Error(err);
-
-      console.log('Page created! Check out index.html in this directory to see it!');
-    });
+    return generatePage(portfolioData)
+  })
+  .then(pageHTML => {
+    return writeFile(pageHTML)
+  })
+  .then(writeFileResponse => {
+    console.log(writeFileResponse);
+    return copyFile();
+  })
+  .then(copyFileResponse => {
+    console.log(copyFileResponse)
+  })
+  .catch(err => {
+    console.log(err)
   })
 
