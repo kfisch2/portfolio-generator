@@ -4,7 +4,8 @@ const inquirer = require('inquirer')
 const fs = require('fs');
 
 // grab generatePage function from page-template.js
-const generatePage = require('./src/page-template.js')
+const generatePage = require('./src/page-template.js');
+// const { userInfo } = require('os');
 
 
 
@@ -62,7 +63,7 @@ const promptProject = portfolioData => {
   if (!portfolioData.projects) {
     portfolioData.projects = [];
   }
-  
+
   return inquirer.prompt([
     {
       type: 'input',
@@ -113,6 +114,8 @@ const promptProject = portfolioData => {
       message: 'Would you like to enter another project?',
       default: false,
     }
+
+
   ]).then(projectData => {
     portfolioData.projects.push(projectData);
     if (projectData.confirmAddProject) {
@@ -120,12 +123,21 @@ const promptProject = portfolioData => {
     } else {
       return portfolioData;
     }
-  })
+  }
+  )
 }
 
 // prompt and display user questions/answers
 promptUser()
-  // .then(answers => console.log(answers))
   .then(promptProject)
-  .then(portfolioData => console.log(portfolioData))
+  .then(portfolioData => {
+    const pageHTML = generatePage(portfolioData);
+  
+    // writes the html file!
+    fs.writeFile('./index.html', pageHTML, err => {
+      if (err) throw new Error(err);
+
+      console.log('Page created! Check out index.html in this directory to see it!');
+    });
+  })
 
