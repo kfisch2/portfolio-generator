@@ -1,7 +1,6 @@
 const inquirer = require('inquirer')
 
-// node fileSystem library module
-const fs = require('fs');
+const generateSite = require('./utils/generate-site.js')
 
 // grab generatePage function from page-template.js
 const generatePage = require('./src/page-template.js');
